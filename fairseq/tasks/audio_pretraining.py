@@ -22,6 +22,7 @@ from fairseq.dataclass.configs import GenerationConfig
 from . import FairseqTask, register_task
 from .. import utils
 from ..logging import metrics
+from fairseq.dataclass.utils import convert_namespace_to_omegaconf
 
 
 logger = logging.getLogger(__name__)
@@ -190,6 +191,7 @@ class AudioPretrainingTask(FairseqTask):
         if isinstance(task_cfg, Namespace):
             if not hasattr(task_cfg, "autoregressive"):
                 task_cfg.autoregressive = not task_cfg.criterion == 'ctc'
+            task_cfg = convert_namespace_to_omegaconf(task_cfg)['task'] ## fix for batch inference on old models (trained without hydra)
 
         manifest = os.path.join(data_path, "{}.tsv".format(split))
         self.datasets[split] = FileAudioDataset(
