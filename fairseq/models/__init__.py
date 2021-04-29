@@ -83,7 +83,8 @@ def build_model(cfg: FairseqDataclass, task):
         if isinstance(cfg, argparse.Namespace):
             cfg = populate_dataclass(dc(), cfg)
         else:
-            cfg = merge_with_parent(dc(), cfg)
+            pass
+            #cfg = merge_with_parent(dc(), cfg) ## changes for single file inference
 
     assert model is not None, (
         f"Could not infer model type from {cfg}. "
