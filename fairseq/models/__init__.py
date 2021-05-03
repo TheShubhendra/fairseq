@@ -25,7 +25,7 @@ from .fairseq_model import (
     FairseqModel,
     FairseqMultiModel,
 )
-
+from argparse import Namespace
 
 MODEL_REGISTRY = {}
 MODEL_DATACLASS_REGISTRY = {}
@@ -80,11 +80,13 @@ def build_model(cfg: FairseqDataclass, task):
     if model_type in MODEL_DATACLASS_REGISTRY:
         # set defaults from dataclass. note that arch name and model name can be the same
         dc = MODEL_DATACLASS_REGISTRY[model_type]
+        if not isinstance(cfg, argparse.Namespace):
+            cfg = Namespace(**cfg) ## added to save new models as they were not getting saved
         if isinstance(cfg, argparse.Namespace):
             cfg = populate_dataclass(dc(), cfg)
         else:
-            pass
-            #cfg = merge_with_parent(dc(), cfg) ## changes for single file inference
+            #pass
+            cfg = merge_with_parent(dc(), cfg) ## changes for single file inference
 
     assert model is not None, (
         f"Could not infer model type from {cfg}. "
