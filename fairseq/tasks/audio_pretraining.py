@@ -191,7 +191,7 @@ class AudioPretrainingTask(FairseqTask):
         if isinstance(task_cfg, Namespace):
             if not hasattr(task_cfg, "autoregressive"):
                 task_cfg.autoregressive = not task_cfg.criterion == 'ctc'
-            task_cfg = convert_namespace_to_omegaconf(task_cfg)['task'] ## fix for batch inference on old models (trained without hydra)
+            #task_cfg = convert_namespace_to_omegaconf(task_cfg)['task'] ## fix for batch inference on old models (trained without hydra)
 
         manifest = os.path.join(data_path, "{}.tsv".format(split))
         self.datasets[split] = FileAudioDataset(
